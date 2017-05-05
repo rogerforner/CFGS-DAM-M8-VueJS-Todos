@@ -9,19 +9,21 @@ import Tokens from 'components/Tokens'
 import Todos from 'components/Todos'
 
 const routes = [
-    { path: '/foo', component: Todos },
-    { path: '/bar', component: Tokens }
+    { path: '/todos', component: Todos },
+    { path: '/tokens', component: Tokens }
 ]
 
-const router = new VueRouter(
-  routes // short for routes: routes
-)
+const router = new VueRouter({
+  routes
+})
 
 Vue.use(VueMaterial)
-Vue.use(router)
+Vue.use(VueRouter)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   template: '<App/>',
-  components: { App }
+  components: { App },
+  router: router
 })
