@@ -57,17 +57,15 @@
   }
 </style>
 <script>
-  var STORAGE_KEY = 'todosvue_token'
-  var AUTH_CLIENT_ID = '4'
-  var AUTH_REDIRECT_URI = 'http://localhost:8095/todos'
+  // var AUTH_CLIENT_ID = '4'
+  // var AUTH_REDIRECT_URI = 'http://localhost:8095/todos'
   var API_URL = 'http://todos.dev:8080/api/v1/task'
 
   export default{
     data () {
       return {
         todos: [],
-        authorized: false,
-        token: null,
+        connectin: true,
         connecting: false,
         total: 0,
         perPage: 0,
@@ -75,20 +73,11 @@
       }
     },
     created () {
-      if (document.location.hash) var token = this.extractToken(document.location.hash)
-      if (token) this.saveToken(token)
-      if (this.token == null) this.token = this.fetchToken()
-      if (this.token) {
-        this.authorized = true
-        this.connecting = true
-        var that = this
-        setTimeout(function () {
-          that.fetchData()
-          that.connecting = false
-        }, 500)
-      } else {
-        this.authorized = false
-      }
+      var that = this
+      setTimeout(function () {
+        that.fetchData()
+        that.connecting = false
+      }, 500)
     },
     methods: {
       fetchData: function () {
@@ -107,32 +96,6 @@
           this.showConnectionError()
           this.authorized = false
         })
-      },
-      extractToken: function (hash) {
-        return hash.match(/#(?:access_token)=([\S\s]*?)&/)[1]
-      },
-      logout: function () {
-        window.localStorage.removeItem(STORAGE_KEY)
-        // TODO: only if HTTP response code 401
-        // TODO: mostrar amb una bona UI/UE -> SweetAlert
-        window.sweetAlert('Oops...', 'Something went wrong!', 'error')
-        this.authorized = false
-      },
-      connect: function () {
-        query = {
-          client_id: AUTH_CLIENT_ID,
-          redirect_uri: AUTH_REDIRECT_URI,
-          response_type: 'token',
-          scope: ''
-        }
-        var query = window.querystring.stringify(query)
-        window.location.replace('http://todos.dev:8000/oauth/authorize?' + query)
-      },
-      fetchToken: function () {
-        return window.localStorage.getItem(STORAGE_KEY)
-      },
-      saveToken: function (token) {
-        window.localStorage.setItem(STORAGE_KEY, token)
       },
       onPagination: function () {
         console.log('pagination todo!')

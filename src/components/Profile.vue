@@ -42,8 +42,8 @@
 <style>
 </style>
 <script>
+// var API_PROFILE_URL = 'http://todos.dev:8000/api/v1/USER'
 var STORAGE_KEY = 'todosvue_token'
-// var API_PROFILE_URL = 'http://todos.dev:8080/api/v1/user'
 export default {
   data () {
     return {
