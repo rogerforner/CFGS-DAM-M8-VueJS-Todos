@@ -7,6 +7,7 @@ import 'vue-material/dist/vue-material.css'
 import VueRouter from 'vue-router'
 import Tokens from 'components/Tokens'
 import Todos from 'components/Todos'
+import Profile from 'components/Profile'
 import Axios from 'axios'
 import querystring from 'querystring'
 
@@ -19,7 +20,8 @@ window.sweetAlert = sweetAlert
 
 const routes = [
     { path: '/todos', component: Todos },
-    { path: '/tokens', component: Tokens }
+    { path: '/tokens', component: Tokens },
+    { path: '/profile', component: Profile }
 ]
 
 const router = new VueRouter({
