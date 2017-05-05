@@ -7,6 +7,10 @@ import 'vue-material/dist/vue-material.css'
 import VueRouter from 'vue-router'
 import Tokens from 'components/Tokens'
 import Todos from 'components/Todos'
+import Axios from 'axios'
+
+window.axios = Axios
+Vue.prototype.$http = axios
 
 const routes = [
     { path: '/todos', component: Todos },
