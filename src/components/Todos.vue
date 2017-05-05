@@ -47,12 +47,17 @@
         return this.fetchPage(1)
       },
       fetchPage: function (page) {
+        if (this.token != null) {
+          this.$http.defaults.headers.common['Authorization'] = 'Bearer ' + this.token
+          console.log('HEY TOKEN: ' + this.token)
+        }
         this.$http.get('http://todos.dev:8000/api/v1/task?page=' + page).then((response) => {
           console.log(response.data)
           this.todos = response.data.data
         }, (response) => {
           // sweetAlert('Oops...', 'Something went wrong!', 'error')
           console.log(response.data)
+          // this.authorized = false
         })
       },
       extractToken: function (hash) {
@@ -61,6 +66,8 @@
       },
       logout: function () {
         window.localStorage.removeItem(STORAGE_KEY)
+        // TODO: only if HTTP response code 401
+        // TODO: mostrar amb una bona UI/UE -> SweetAlert
         this.authorized = false
       },
       connect: function () {
