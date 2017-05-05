@@ -59,10 +59,10 @@ var STOARGE_KEY =todosvue_token
         window.location.replace('http://todos.dev:8000/oauth/authorize?' + query)
       },
       fetchToken: function () {
-        return window.localStorage.getItem(window.STORAGE_KEY)
+        return window.localStorage.getItem(STORAGE_KEY)
       },
       save: function (toKEN) {
-        window.localStorage.setItem(window.STORAGE_KEY, this.token)
+        window.localStorage.setItem(STORAGE_KEY, this.token)
       }
     }
   }
