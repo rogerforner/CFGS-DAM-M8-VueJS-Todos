@@ -23,6 +23,8 @@ const routes = [
 ]
 
 const router = new VueRouter({
+    // history mode html5 per borrar #
+  mode: 'history',
   routes
 })
 

@@ -2,14 +2,15 @@
     <div>
         <div v-show="!authorized">
             <md-button class="md-raised md-primary" @click="connect">Connect</md-button>
-            <div>
-              <ul>
+        </div>
+        <div v-show="authorized">
+            <md-button class="md-raised md-primary" @click="logout">Logout</md-button>
+        </div>
+              <ul v-show="authorized">
                 <li v-for="(todo, index) in todos">
                     {{ todo.name }}
                 </li>
               </ul>
-            </div>
-        </div>
     </div>
 </template>
 <style>
@@ -18,7 +19,10 @@
   }
 </style>
 <script>
-var STOARGE_KEY =todosvue_token
+  var STORAGE_KEY = 'todosvue_token'
+  var AUTH_CLIENT_ID = '4'
+  var AUTH_REDIRECT_URI = 'http://localhost:8095/todos'
+
   export default{
     data () {
       return {
@@ -27,42 +31,51 @@ var STOARGE_KEY =todosvue_token
       }
     },
     created () {
-      console.log(this.fetchToken())
+      var token = this.extractToken(document.location.hash)
+      if (token) this.saveToken(token)
       if (this.fetchToken()) {
         this.authorized = true
       } else {
         this.authorized = false
       }
+      this.fetchData()
     },
     methods: {
       fetchData: function () {
         return this.fetchPage(1)
       },
       fetchPage: function (page) {
-        this.$http.get('http://todos.dev:8000/api/v1/task?page' + page).then((response) => {
+        this.$http.get('http://todos.dev:8000/api/v1/task?page=' + page).then((response) => {
           console.log(response.data)
           this.todos = response.data.data
         }, (response) => {
           // sweetAlert('Oops...', 'Something went wrong!', 'error')
-          console.log('Error')
+          console.log(response.data)
         })
       },
+      extractToken: function (hash) {
+        var match = hash.match(/access_token=(\w+)/)
+        return !!match && match[1]
+      },
+      logout: function () {
+        window.localStorage.removeItem(STORAGE_KEY)
+        this.authorized = false
+      },
       connect: function () {
-        console.log('Connect here')
-        'client_id' => '3',
-        //És localhost (només una redirecció).
-        'redirect_uri' => 'http://oauthclient.dev:8001/implicit',
-        'response_type' => 'token', //implicit
-        'scope' => '',
-        var query = 'client_id=' + AUTH_CLIENT_ID + '&redirect_uri=' + window.location + '&response_type=token&scope='
-         console.log(query)
+        query = {
+          client_id: AUTH_CLIENT_ID,
+          redirect_uri: AUTH_REDIRECT_URI,
+          response_type: 'token',
+          scope: ''
+        }
+        var query = window.querystring.stringify(query)
         window.location.replace('http://todos.dev:8000/oauth/authorize?' + query)
       },
       fetchToken: function () {
         return window.localStorage.getItem(STORAGE_KEY)
       },
-      save: function (toKEN) {
-        window.localStorage.setItem(STORAGE_KEY, this.token)
+      saveToken: function (token) {
+        window.localStorage.setItem(STORAGE_KEY, token)
       }
     }
   }
