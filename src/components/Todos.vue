@@ -27,18 +27,20 @@
     data () {
       return {
         todos: [],
-        authorized: false
+        authorized: false,
+        token: null
       }
     },
     created () {
       var token = this.extractToken(document.location.hash)
       if (token) this.saveToken(token)
-      if (this.fetchToken()) {
+      if (this.token == null) this.token = this.fetchToken()
+      if (this.token) {
         this.authorized = true
+        this.fetchData()
       } else {
         this.authorized = false
       }
-      this.fetchData()
     },
     methods: {
       fetchData: function () {
@@ -79,5 +81,5 @@
       }
     }
   }
-
+// Traure nom del usuari i la seva foto amb les metadades que retorna el todosBackend.
 </script>
