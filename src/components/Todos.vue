@@ -18,6 +18,7 @@
   }
 </style>
 <script>
+var STOARGE_KEY =todosvue_token
   export default{
     data () {
       return {
@@ -48,6 +49,14 @@
       },
       connect: function () {
         console.log('Connect here')
+        'client_id' => '3',
+        //És localhost (només una redirecció).
+        'redirect_uri' => 'http://oauthclient.dev:8001/implicit',
+        'response_type' => 'token', //implicit
+        'scope' => '',
+        var query = 'client_id=' + AUTH_CLIENT_ID + '&redirect_uri=' + window.location + '&response_type=token&scope='
+         console.log(query)
+        window.location.replace('http://todos.dev:8000/oauth/authorize?' + query)
       },
       fetchToken: function () {
         return window.localStorage.getItem(window.STORAGE_KEY)
