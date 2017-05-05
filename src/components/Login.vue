@@ -21,10 +21,9 @@
 
 </style>
 <script>
-var STORAGE_KEY = 'todosvue_token'
-var AUTH_CLIENT_ID = 5
-var AUTH_REDIRECT_URI = 'http://localhost:8095/todos'
-var OAUTH_SERVER_URL = 'http://todos.dev:8000/oauth/authorize?'
+  import todosVue from '../config'
+  import auth from '../services/auth'
+
 
 export default{
   data () {
