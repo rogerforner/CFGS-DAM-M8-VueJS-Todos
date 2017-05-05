@@ -3,14 +3,14 @@ import todosVue from '../todosVue'
 export default {
   login (email, pass, cb) {
     cb = arguments[arguments.length - 1]
-    if (localStorage.token) {
+    if (window.localStorage.token) {
       if (cb) cb(true)
       this.onChange(true)
       return
     }
     pretendRequest(email, pass, (res) => {
       if (res.authenticated) {
-        localStorage.token = res.token
+        window.localStorage.token = res.token
         if (cb) cb(true)
         this.onChange(true)
       } else {
@@ -26,7 +26,7 @@ export default {
     window.localStorage.setItem(todosVue.STORAGE_TOKEN_KEY, token)
   },
   logout (cb) {
-    delete localStorage.token
+    delete window.localStorage.token
     if (cb) cb()
     this.onChange(false)
   },
