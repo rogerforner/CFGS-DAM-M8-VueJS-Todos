@@ -5,9 +5,6 @@ import App from './App'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
 import VueRouter from 'vue-router'
-import Tokens from 'components/Tokens'
-import Todos from 'components/Todos'
-import Profile from 'components/Profile'
 import Axios from 'axios'
 import querystring from 'querystring'
 
@@ -18,16 +15,16 @@ Vue.prototype.$http = Axios
 import sweetAlert from 'sweetalert'
 window.sweetAlert = sweetAlert
 
-const routes = [
-    { path: '/todos', component: Todos },
-    { path: '/tokens', component: Tokens },
-    { path: '/profile', component: Profile }
-]
+import routes from './routes'
 
 const router = new VueRouter({
     // history mode html5 per borrar #
   mode: 'history',
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  console.log('a provar')
 })
 
 Vue.use(VueMaterial)
