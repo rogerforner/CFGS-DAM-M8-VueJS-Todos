@@ -1,9 +1,14 @@
 <template>
     <div>
         <div>
-          <ul>
-            <li v-for="(todo, index) in todos">{{ todo.name }}</li>
-          </ul>
+            <md-button class="md-raised md-primary">Connect</md-button>
+            <div>
+              <ul>
+                <li v-for="(todo, index) in todos">
+                    {{ todo.name }}
+                </li>
+              </ul>
+            </div>
         </div>
     </div>
 </template>
