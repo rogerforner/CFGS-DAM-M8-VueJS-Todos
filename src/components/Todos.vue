@@ -60,6 +60,7 @@
   var STORAGE_KEY = 'todosvue_token'
   var AUTH_CLIENT_ID = '4'
   var AUTH_REDIRECT_URI = 'http://localhost:8095/todos'
+  var API_URL = 'http://todos.dev:8080/api/v1/task'
 
   export default{
     data () {
@@ -94,18 +95,17 @@
         return this.fetchPage(1)
       },
       fetchPage: function (page) {
-        if (this.token != null) {
-          this.$http.defaults.headers.common['Authorization'] = 'Bearer ' + this.token
-          console.log('HEY TOKEN: ' + this.token)
-        }
-        this.$http.get('http://todos.dev:8000/api/v1/task?page=' + page).then((response) => {
-          console.log(response.data)
+        this.$http.get(API_URL + '?page=' + page).then((response) => {
           this.todos = response.data.data
-        }, (response) => {
-          this.connecting = false
-          // sweetAlert('Oops...', 'Something went wrong!', 'error')
           console.log(response.data)
-          // this.authorized = false
+          console.log(typeof response.data.total)
+          this.total = response.data.total
+          this.perPage = response.data.per_page
+          this.page = response.data.current_page
+        }, (response) => {
+          console.log('ERROR DATA: ' + response.data)
+          this.showConnectionError()
+          this.authorized = false
         })
       },
       extractToken: function (hash) {
