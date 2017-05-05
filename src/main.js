@@ -12,6 +12,8 @@ window.axios = Axios
 window.querystring = querystring
 Vue.prototype.$http = Axios
 
+import '../node_modules/sweetalert/dist/sweetalert.min'
+import '../node_modules/sweetalert/dist/sweetalert.css'
 import sweetAlert from 'sweetalert'
 window.sweetAlert = sweetAlert
 

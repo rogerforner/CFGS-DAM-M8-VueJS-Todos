@@ -3,9 +3,9 @@
         <!--<div v-show="!authorized">-->
             <!--<md-button class="md-raised md-primary" @click="connect">Connect</md-button>-->
         <!--</div>-->
-        <!--<div v-show="authorized">-->
-            <!--<md-button class="md-raised md-primary" @click="logout">Logout</md-button>-->
-        <!--</div>-->
+        <div>
+            <md-button class="md-raised md-primary" @click="logout">Logout</md-button>
+        </div>
         <div>
             <md-table-card>
                 <md-toolbar>
@@ -100,6 +100,13 @@
       },
       onPagination: function () {
         console.log('pagination todo!')
+      },
+      logout: function () {
+        window.localStorage.removeItem(STORAGE_KEY)
+        // TODO: only if HTTP response code 401
+        // TODO: mostrar amb una bona UI/UE -> SweetAlert
+        window.sweetAlert('Oops...', 'Something went wrong!', 'error')
+        this.authorized = false
       }
     }
   }
