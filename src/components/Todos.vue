@@ -6,16 +6,54 @@
         <div v-show="authorized">
             <md-button class="md-raised md-primary" @click="logout">Logout</md-button>
         </div>
-              <ul v-show="authorized">
-                <li v-for="(todo, index) in todos">
-                    {{ todo.name }}
-                </li>
-              </ul>
+        <div>
+            <md-table-card>
+                <md-toolbar>
+                    <h1 class="md-title">todosVue</h1>
+                    <md-button class="md-icon-button">
+                       <md-icon>filter_list</md-icon>
+                    </md-button>
+
+                    <md-button class="md-icon-button">
+                       <md-icon>search</md-icon>
+                    </md-button>
+                </md-toolbar>
+
+                <md-table md-sort="name" md-sort-type="desc">
+                    <md-table-header>
+                        <md-table-row>
+                            <md-table-head md-sort-by="name">Name</md-table-head>
+                            <md-table-head md-sort-by="priority">Priority</md-table-head>
+                            <md-table-head md-sort-by="done" md-numeric>Done</md-table-head>
+                        </md-table-row>
+                    </md-table-header>
+
+                    <md-spinner :md-size="150" md-indeterminate  class="md-accent" v-show="connecting"></md-spinner>
+            <md-table-body>
+                <md-table-row v-for="(todo, index) in todos" md-auto-select md-selection>
+                    <md-table-cell>{{ index +1 }} {{ todo.name }}</md-table-cell>
+                    <md-table-cell>{{ todo.priority }}</md-table-cell>
+                    <md-table-cell>{{ todo.done }}</md-table-cell>
+                </md-table-row>
+            </md-table-body>
+                </md-table>
+
+                <md-table-pagination
+                        :md-size=perPage
+                        :md-total=total
+                        :md-page=page
+                        md-label="Rows"
+                        md-separator="of"
+                        :md-page-options="[5, 15, 25, 50]"
+                        @pagination="onPagination"></md-table-pagination>
+
+            </md-table-card>
+        </div>
     </div>
 </template>
 <style>
   body{
-      background-color:#ff0000;
+      background-color: green;
   }
 </style>
 <script>
@@ -28,11 +66,15 @@
       return {
         todos: [],
         authorized: false,
-        token: null
+        token: null,
+        connecting: false,
+        total: 0,
+        perPage: 0,
+        page: 0
       }
     },
     created () {
-      var token = this.extractToken(document.location.hash)
+      if (document.location.hash) var token = this.extractToken(document.location.hash)
       if (token) this.saveToken(token)
       if (this.token == null) this.token = this.fetchToken()
       if (this.token) {
@@ -61,8 +103,7 @@
         })
       },
       extractToken: function (hash) {
-        var match = hash.match(/access_token=(\w+)/)
-        return !!match && match[1]
+        return hash.match(/#(?:access_token)=([\S\s]*?)&/)[1]
       },
       logout: function () {
         window.localStorage.removeItem(STORAGE_KEY)
@@ -86,6 +127,9 @@
       },
       saveToken: function (token) {
         window.localStorage.setItem(STORAGE_KEY, token)
+      },
+      onPagination: function () {
+        console.log('pagination todo!')
       }
     }
   }
