@@ -86,6 +86,7 @@
           this.connecting = false
           this.showConnectionError()
           this.authorized = false
+          window.sweetAlert('Oops...', 'Something went wrong!', 'error')
         })
       },
       showConnectionError () {
