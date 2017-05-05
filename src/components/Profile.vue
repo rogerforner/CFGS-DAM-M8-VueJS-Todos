@@ -42,10 +42,8 @@
 <style>
 </style>
 <script>
-  var STORAGE_KEY = 'todosvue_token'
-  var AUTH_CLIENT_ID = '4'
-  var AUTH_REDIRECT_URI = 'http://localhost:8095/todos'
-  var API_PROFILE_URL = 'http://todos.dev:8080/api/v1/user'
+var STORAGE_KEY = 'todosvue_token'
+// var API_PROFILE_URL = 'http://todos.dev:8080/api/v1/user'
 export default {
   data () {
     return {
@@ -59,13 +57,19 @@ export default {
       page: 0
     }
   },
+  computed: {
+    avatarHash: function () {
+      return '7d23ac5a56b02117f12c54f0d98bf6de?s=80'
+      // TODO: return md5 de email(si canvia emial canvia url).
+    }
+  },
   created () {
     console.log('Component profile created')
     this.fetchUserProfile()
   },
   methods: {
     fetchUserProfile: function () {
-      this.$http.defaults.headers.common['Authorization'] = 'Bearer ' + this.token
+      this.$http.defaults.headers.common['Authorization'] = 'Bearer ' + window.localStorage.getItem(STORAGE_KEY)
       this.$http.get('http://todos.dev:8000/api/v1/task?page=' + this.page).then((response) => {
         this.connecting = false
         console.log(response.data)
