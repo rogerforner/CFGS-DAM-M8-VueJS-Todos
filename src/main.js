@@ -10,7 +10,7 @@ import Todos from 'components/Todos'
 import Axios from 'axios'
 
 window.axios = Axios
-Vue.prototype.$http = axios
+Vue.prototype.$http = Axios
 
 const routes = [
     { path: '/todos', component: Todos },
