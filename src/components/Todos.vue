@@ -68,6 +68,7 @@
         window.localStorage.removeItem(STORAGE_KEY)
         // TODO: only if HTTP response code 401
         // TODO: mostrar amb una bona UI/UE -> SweetAlert
+        window.sweetAlert('Oops...', 'Something went wrong!', 'error')
         this.authorized = false
       },
       connect: function () {

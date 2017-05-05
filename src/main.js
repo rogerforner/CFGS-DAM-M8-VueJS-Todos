@@ -14,8 +14,8 @@ window.axios = Axios
 window.querystring = querystring
 Vue.prototype.$http = Axios
 
-import SweetAlert from 'sweetalert'
-window.sweetAlert = SweetAlert
+import sweetAlert from 'sweetalert'
+window.sweetAlert = sweetAlert
 
 const routes = [
     { path: '/todos', component: Todos },
