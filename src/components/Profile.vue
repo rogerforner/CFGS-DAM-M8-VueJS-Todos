@@ -18,17 +18,17 @@
 
                 <md-input-container>
                     <label>Email</label>
-                    <md-input placeholder="Put your email here"></md-input>
+                    <md-input v-model="email" placeholder="Put your email here"></md-input>
                 </md-input-container>
 
-                <md-input-container md-inline>
+                <md-input-container>
                     <label>Created at</label>
-                    <md-input placeholder="Your date here"></md-input>
+                    <md-input v-model="createdAt" placeholder="Your date here"></md-input>
                 </md-input-container>
 
                 <md-input-container>
                     <label>Updated at</label>
-                    <md-input type="number" placeholder="Your date here"></md-input>
+                    <md-input v-model="updatedAt" placeholder="Your date here"></md-input>
                 </md-input-container>
             </form>
         </md-card-content>
