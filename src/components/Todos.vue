@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>Msg: {{ msg }}</div>
+        <div>{{ msg }}</div>
     </div>
 </template>
 <style>
@@ -12,7 +12,7 @@
   export default{
     data () {
       return {
-        msg: 'Todos aqui'
+        msg: 'Todos here'
       }
     }
   }
