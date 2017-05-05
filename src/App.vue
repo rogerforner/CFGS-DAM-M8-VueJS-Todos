@@ -22,14 +22,17 @@
 
       <md-list>
         <md-list-item>
-         <md-icon>playlist_add_check</md-icon><span>todosVue</span>
+         <md-icon>playlist_add_check</md-icon>
+          <router-link to="/todos">todosVue</router-link>
         </md-list-item>
 
         <md-list-item>
-         <md-icon>vpn_key</md-icon><span>Tokens</span>
+         <md-icon>vpn_key</md-icon>
+          <router-link to="/tokens">Tokens</router-link>
         </md-list-item>
       </md-list>
     </md-sidenav>
+    TODO contingut
   </div>
 </template>
 
