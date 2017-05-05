@@ -30,6 +30,10 @@
          <md-icon>vpn_key</md-icon>
           <router-link to="/tokens">Tokens</router-link>
         </md-list-item>
+        <md-list-item @click="toggleLeftSidenav">
+         <md-icon>profile</md-icon>
+          <router-link to="/profile">Profile</router-link>
+        </md-list-item>
       </md-list>
     </md-sidenav>
     <router-view></router-view>
