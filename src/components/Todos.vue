@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div>
-            <md-button class="md-raised md-primary">Connect</md-button>
+        <div v-show="!authorized">
+            <md-button class="md-raised md-primary" @click="connect">Connect</md-button>
             <div>
               <ul>
                 <li v-for="(todo, index) in todos">
@@ -21,13 +21,17 @@
   export default{
     data () {
       return {
-        msg: 'Todos here',
-        todos: []
+        todos: [],
+        authorized: false
       }
     },
     created () {
-      console.log('Provant')
-      this.fetchData()
+      console.log(this.fetchToken())
+      if (this.fetchToken()) {
+        this.authorized = true
+      } else {
+        this.authorized = false
+      }
     },
     methods: {
       fetchData: function () {
@@ -38,9 +42,18 @@
           console.log(response.data)
           this.todos = response.data.data
         }, (response) => {
-          // SweetAlert('Oops...', 'Something went wrong!', 'error')
+          // sweetAlert('Oops...', 'Something went wrong!', 'error')
           console.log('Error')
         })
+      },
+      connect: function () {
+        console.log('Connect here')
+      },
+      fetchToken: function () {
+        return window.localStorage.getItem(window.STORAGE_KEY)
+      },
+      save: function (toKEN) {
+        window.localStorage.setItem(window.STORAGE_KEY, this.token)
       }
     }
   }
