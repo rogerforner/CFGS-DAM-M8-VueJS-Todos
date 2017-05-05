@@ -79,7 +79,12 @@
       if (this.token == null) this.token = this.fetchToken()
       if (this.token) {
         this.authorized = true
-        this.fetchData()
+        this.connecting = true
+        var that = this
+        setTimeout(function () {
+          that.fetchData()
+          that.connecting = false
+        }, 500)
       } else {
         this.authorized = false
       }
@@ -97,6 +102,7 @@
           console.log(response.data)
           this.todos = response.data.data
         }, (response) => {
+          this.connecting = false
           // sweetAlert('Oops...', 'Something went wrong!', 'error')
           console.log(response.data)
           // this.authorized = false
