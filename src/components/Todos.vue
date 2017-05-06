@@ -64,9 +64,11 @@
   import todosVue from '../todosVue'
 
   export default{
+    props: ['todo', 'index', 'from'],
     data () {
       return {
         todos: [],
+        editing: false,
         connecting: false,
         total: 0,
         perPage: 0,
@@ -128,6 +130,22 @@
           window.sweetAlert('Oops...', 'Something went wrong!', 'error')
           console.log(response)
         })
+      },
+      editTodoApi: function () {
+        this.$http.put(this.uri + '/' + this.todo.id, {
+          name: this.todo.name,
+          priority: this.todo.priority,
+          done: this.todo.done
+        }).then((response) => {
+          console.log(response)
+        }, (response) => {
+          window.sweetAlert('Oops...', 'Something went wrong!', 'error')
+          console.log(response)
+        })
+      },
+      editTodo: function () {
+        this.editing = true
+        return this.editing
       }
     }
   }
