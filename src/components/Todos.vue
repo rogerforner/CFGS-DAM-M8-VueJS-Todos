@@ -33,9 +33,9 @@
               <span class="btn btn-md btn-danger"  @click="deleteTodo(index,todo.id)">
                <md-icon>delete_forever</md-icon>
               </span>
-              <span class="btn btn-md btn-info" @click="editTodo(index,todo.id)">
-               <md-icon>edit</md-icon>
-              </span>
+              <!--<span class="btn btn-md btn-info" @click="editTodo(index,todo.id)">-->
+                <!--<md-icon>edit</md-icon>-->
+              <!--</span>-->
             </md-table-cell>
           </md-table-row>
         </md-table-body>
@@ -64,11 +64,11 @@
   import todosVue from '../todosVue'
 
   export default{
-    props: ['todo', 'index', 'from'],
+//    props: ['todo', 'index', 'from'],
     data () {
       return {
         todos: [],
-        editing: false,
+//        editing: false,
         connecting: false,
         total: 0,
         perPage: 0,
@@ -130,23 +130,23 @@
           window.sweetAlert('Oops...', 'Something went wrong!', 'error')
           console.log(response)
         })
-      },
-      editTodoApi: function () {
-        this.$http.put(this.uri + '/' + this.todo.id, {
-          name: this.todo.name,
-          priority: this.todo.priority,
-          done: this.todo.done
-        }).then((response) => {
-          console.log(response)
-        }, (response) => {
-          window.sweetAlert('Oops...', 'Something went wrong!', 'error')
-          console.log(response)
-        })
-      },
-      editTodo: function () {
-        this.editing = true
-        return this.editing
       }
+//      editTodoApi: function () {
+//        this.$http.put(this.uri + '/' + this.todo.id, {
+//          name: this.todo.name,
+//          priority: this.todo.priority,
+//          done: this.todo.done
+//        }).then((response) => {
+//          console.log(response)
+//        }, (response) => {
+//          window.sweetAlert('Oops...', 'Something went wrong!', 'error')
+//          console.log(response)
+//        })
+//      },
+//      editTodo: function () {
+//        this.editing = true
+//        return this.editing
+//      }
     }
   }
 // Traure nom del usuari i la seva foto amb les metadades que retorna el todosBackend.
