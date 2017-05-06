@@ -16,8 +16,9 @@
         <md-table-header>
           <md-table-row>
             <md-table-head md-sort-by="name">Name</md-table-head>
-            <md-table-head md-sort-by="priority">Priority</md-table-head>
-            <md-table-head md-sort-by="done" md-numeric>Done</md-table-head>
+            <md-table-head md-sort-by="priority" md-numeric>Priority</md-table-head>
+            <md-table-head md-sort-by="done">Done</md-table-head>
+            <md-table-head md-sort-by="actions">Actions</md-table-head>
           </md-table-row>
         </md-table-header>
 
@@ -28,6 +29,14 @@
             <md-table-cell>{{ index +1 }} {{ todo.name }}</md-table-cell>
             <md-table-cell>{{ todo.priority }}</md-table-cell>
             <md-table-cell>{{ todo.done }}</md-table-cell>
+            <md-table-cell>
+              <span class="btn btn-md btn-danger"  @click="deleteTodo(index,todo.id)">
+               <md-icon>delete_forever</md-icon>
+              </span>
+              <span class="btn btn-md btn-info" @click="editTodo(index,todo.id)">
+               <md-icon>edit</md-icon>
+              </span>
+            </md-table-cell>
           </md-table-row>
         </md-table-body>
       </md-table>
@@ -94,6 +103,31 @@
       },
       onPagination: function () {
         console.log('pagination todo!')
+      },
+      deleteTodo: function (index, id) {
+        var out = this
+        window.swal({
+          title: 'Are you sure?',
+          text: 'You will not be able to recover this task!',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#DD6B55',
+          confirmButtonText: 'Yes, delete it!',
+          closeOnConfirm: false
+        },
+        function () {
+          window.swal('Deleted!', 'Your task has been deleted.', 'success')
+          out.deleteTodoApi(id)
+          out.fetchPage(out.page)
+        })
+      },
+      deleteTodoApi: function (id) {
+        this.$http.delete(todosVue.API_TASK_URL + '/' + id).then((response) => {
+          console.log(response)
+        }, (response) => {
+          window.sweetAlert('Oops...', 'Something went wrong!', 'error')
+          console.log(response)
+        })
       }
     }
   }
