@@ -1,21 +1,21 @@
 <template>
-    <md-card>
-        <md-card-header>
-            <div class="md-title">Login</div>
-        </md-card-header>
-        <md-card-content>
-            <md-button class="md-raised md-primary" @click="login" v-show="!authorized">Login</md-button>
-            <md-button class="md-raised md-primary" @click="initLogout" v-show="authorized">Logout</md-button>
-        </md-card-content>
-        <md-dialog-confirm
-                md-title="Logout"
-                md-content="Are you sure you want to logout?"
-                md-ok-text="Ok"
-                md-cancel-text="Cancel"
-                @close="onCloseSureToLogout"
-                ref="sureToLogout">
-        </md-dialog-confirm>
-    </md-card>
+  <md-card>
+    <md-card-header>
+      <div class="md-title">Login</div>
+    </md-card-header>
+    <md-card-content>
+      <md-button class="md-raised md-primary" @click.native="login" v-show="!authorized">Login</md-button>
+      <md-button class="md-raised md-primary" @click.native="initLogout" v-show="authorized">Logout</md-button>
+    </md-card-content>
+    <md-dialog-confirm
+      md-title="Logout"
+      md-content="Are you sure you want to logout?"
+      md-ok-text="Ok"
+      md-cancel-text="Cancel"
+      @close="onCloseSureToLogout"
+      ref="sureToLogout">
+    </md-dialog-confirm>
+  </md-card>
 </template>
 <style>
 
@@ -24,7 +24,7 @@
   import todosVue from '../todosVue'
   import auth from '../services/auth'
 
-export default{
+  export default{
     data () {
       return {
         authorized: false
@@ -34,12 +34,6 @@ export default{
       extractToken: function (hash) {
         return hash.match(/#(?:access_token)=([\S\s]*?)&/)[1]
       },
-      saveToken: function (token) {
-        window.localStorage.setItem(todosVue.STORAGE_TOKEN_KEY, token)
-      },
-      fetchToken: function () {
-        return window.localStorage.getItem(todosVue.STORAGE_TOKEN_KEY)
-      },
       login: function () {
         query = {
           client_id: todosVue.OAUTH_CLIENT_ID,
@@ -48,13 +42,30 @@ export default{
           scope: ''
         }
         var query = window.querystring.stringify(query)
-        window.location.replace(todosVue.OAUTH_SERVER_URL + query)
+        if (window.cordova && window.device.platform !== 'browser') {
+          var oAuthWindow = window.cordova.InAppBrowser.open(todosVue.OAUTH_SERVER_URL + query, '_blank', 'location=yes')
+          var login = this
+          oAuthWindow.addEventListener('loadstart', function (e) {
+            var url = e.url
+            var hash = null
+            if (url.split('#')[1]) {
+              hash = url.split('#')[1]
+            }
+            if (hash) {
+              var accessToken = login.extractToken('#' + String(hash))
+              if (accessToken) {
+                auth.saveToken(accessToken)
+                login.authorized = true
+                oAuthWindow.close()
+              }
+            }
+          })
+        } else {
+          window.location.replace(todosVue.OAUTH_SERVER_URL + query)
+        }
       },
       logout: function () {
         window.localStorage.removeItem(todosVue.STORAGE_TOKEN_KEY)
-        // TODO: only if HTTP response code 401
-        // TODO: mostrar amb una bona UI/UE -> SweetAlert
-        // window.sweetAlert('Oops...', 'Something went wrong!', 'error')
         this.authorized = false
       },
       initLogout: function () {
@@ -69,11 +80,14 @@ export default{
     },
     created () {
       if (document.location.hash) var token = this.extractToken(document.location.hash)
-      if (token) this.saveToken(token)
-      if (this.token == null) this.token = auth.getToken()
+      if (token) auth.saveToken(token)
+      if (this.token == null) this.token = window.localStorage.getItem(todosVue.STORAGE_TOKEN_KEY)
+    },
+    mounted () {
       if (this.token) {
         this.authorized = true
         this.$http.defaults.headers.common['Authorization'] = auth.getAuthHeader()
+        console.log(auth.getAuthHeader())
       } else {
         this.authorized = false
         this.$http.defaults.headers.common['Authorization'] = ''
