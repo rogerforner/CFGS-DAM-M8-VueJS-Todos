@@ -1,12 +1,11 @@
 const todosVue = {
-  STORAGE_TOKEN_KEY: 'token',
-  OAUTH_CLIENT_ID: 3,
-  OAUTH_REDIRECT_URI: 'http://localhost:8095',
-  OAUTH_SERVER_URL: 'http://todosbackend2.rogerforne.2dam.acacha.org/oauth/authorize?',
-  API_TASK_URL: 'http://todosbackend2.rogerforne.2dam.acacha.org/api/v1/task',
-  API_PROFILE_URL: 'http://todosbackend2.rogerforne.2dam.acacha.org/api/v1/user',
-  ANDROID_SENDER_ID: '66744941498',
-  REGISTER_GCM_TOKEN_URL: 'http://todosbackend2.rogerforne.2dam.acacha.org/api/v1/user/gcmtoken',
-  GET_MESSAGES_URL: 'http://todosbackend2.rogerforne.2dam.acacha.org/api/v1/user/messages'
+  STORAGE_KEY: 'todosvue_token',
+  AUTH_CLIENT_ID: '1',
+  // AUTH_REDIRECT_URI: 'http://localhost:8095/login',
+  AUTH_REDIRECT_URI: 'http://todosvue.rogerforne.2dam.acacha.org/login',
+  API_PROFILE_URL: 'http://todosbackend2.rogerforne.2dam.acacha.org:8080/api/v1/loguser',
+  ANDROID_SENDER_ID: '1066055111450',
+  REGISTER_GCM_TOKEN_URL: 'http://todosbackend2.rogerforne.2dam.acacha.org:8080/api/v1/user/gcmtoken',
+  GET_MESSAGES_URL: 'http://todosbackend2.rogerforne.2dam.acacha.org:8080/api/user/messages'
 }
 export default todosVue

@@ -1,6 +1,6 @@
 <template>
     <div>
-        Tokens here
+        Tokens here...
     </div>
 </template>
 <style>

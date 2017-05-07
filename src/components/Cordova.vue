@@ -1,47 +1,92 @@
 <template>
-  <div>
-    <md-button @click.native="delay" class="md-raised md-primary">Delay</md-button>
-    <md-list>
-      <p v-show="delayTry">Delay Interval: {{ delayTime }}ms.</p>
-    </md-list>
-    <md-button @click.native="vibrate" class="md-raised md-warn">Vibrate</md-button>
-  </div>
+    <div>
+        <md-card>
+            <md-card-header>
+                <div class="md-title">Vibration</div>
+            </md-card-header>
+
+            <md-card-actions>
+                <md-button @click.native="startVibration">Start</md-button>
+                <md-button @click.native="stopVibration">Stop</md-button>
+            </md-card-actions>
+
+            <md-snackbar md-position="bottom center" ref="vibrationError" md-duration="4000">
+                <span>Oops, vibration funcionality not supported!</span>
+            </md-snackbar>
+        </md-card>
+        <md-card>
+            <md-card-header>
+                <div class="md-title">Geolocation</div>
+            </md-card-header>
+
+            <md-card-actions>
+                <md-button @click.native="showLocation">Show me!</md-button>
+            </md-card-actions>
+
+            <md-snackbar md-position="bottom center" ref="geolocationError" md-duration="4000">
+                <span>Oops, geolocation funcionality not supported!</span>
+            </md-snackbar>
+        </md-card>
+    </div>
 </template>
 <style>
 </style>
 <script>
-  export default{
-    data () {
-      return {
-        delayTry: false,
-        delayTime: null,
-        cTime: null
+export default {
+  data () {
+    return {
+    }
+  },
+  methods: {
+    startVibration: function () {
+      if (!navigator.vibrate) {
+        this.showVibrationError()
+        return
+      }
+      navigator.vibrate([1000, 1000, 3000, 1000, 5000])
+    },
+    stopVibration: function () {
+      if (!navigator.vibrate) {
+        this.showVibrationError()
+        return
+      }
+      navigator.vibrate([0])
+    },
+    showLocation: function () {
+      if (!navigator.geolocation) {
+        this.showGeoLocationError()
+        return
+      }
+      var options = {
+        timeout: 5000
+      }
+
+      navigator.geolocation.getCurrentPosition(onSuccess, onError, options)
+
+      function onError (error) {
+        console.log(error)
+        window.alert('code: ' + error.code + '\n' +
+              'message: ' + error.message + '\n')
+      }
+
+      function onSuccess (position) {
+        console.log(position)
+        window.alert('Latitude: ' + position.coords.latitude + '\n' +
+              'Longitude: ' + position.coords.longitude + '\n' +
+              'Altitude: ' + position.coords.altitude + '\n' +
+              'Accuracy: ' + position.coords.accuracy + '\n' +
+              'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
+              'Heading: ' + position.coords.heading + '\n' +
+              'Speed: ' + position.coords.speed + '\n' +
+              'Timestamp: ' + position.timestamp + '\n')
       }
     },
-    created () {
-      document.addEventListener('deviceready', this.onDeviceReady, false)
+    showGeoLocationError: function () {
+      this.$refs.geolocationError.open()
     },
-    beforeDestroy () {
-      document.removeEventListener('deviceready', this.onBeforeDestroy, false)
-    },
-    methods: {
-      onDeviceReady () {
-        console.log('XIVATO device Ready!')
-      },
-      onBeforeDestroy () {
-        console.log('XIVATO device onBeforeDestroy!')
-      },
-      vibrate () {
-        if (window.cordova && window.device.platform !== 'browser') {
-          navigator.vibrate(3000)
-        } else {
-          console.log('vibration not supported')
-        }
-      },
-      delay () {
-        this.delayTry = true
-        this.delayTime = this.cTime - Date.now()
-      }
+    showVibrationError: function () {
+      this.$refs.vibrationError.open()
     }
   }
+}
 </script>

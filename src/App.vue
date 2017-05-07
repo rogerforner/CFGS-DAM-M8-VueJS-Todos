@@ -1,108 +1,138 @@
 <template>
-  <div class="phone-viewport">
-    <md-toolbar>
-      <md-button class="md-icon-button" @click.native="toggleLeftSidenav">
-       <md-icon>menu</md-icon>
-      </md-button>
+    <div class="phone-viewport">
+      <md-toolbar>
+        <md-button class="md-icon-button" @click.native="toggleLeftSidenav">
+          <md-icon>menu</md-icon>
+        </md-button>
 
-      <h2 class="md-title">todosVue</h2>
-    </md-toolbar>
-
-
-    <md-sidenav class="md-left" ref="leftSidenav" @open="open('Left')" @close="close('Left')" md-swipeable>
-      <md-toolbar class="md-large">
-        <div class="md-toolbar-container">
-          <h3 class="md-title">todosVue</h3>
-        </div>
+        <h2 class="md-title">Todos Client</h2>
       </md-toolbar>
 
-      <md-list>
-        <md-list-item>
-          <router-link @click.native="toggleLeftSidenav" exact to="/todos">Todos Client<md-icon>playlist_add_check</md-icon></router-link>
-        </md-list-item>
+      <md-sidenav class="md-left" ref="leftSidenav" @open="open('Left')" @close="close('Left')" md-swipeable>
+        <md-toolbar class="md-large">
+          <md-avatar v-if="logged">
+            <img src="./assets/logo.png" alt="Avatar">
+          </md-avatar>
 
-        <md-list-item>
-          <router-link @click.native="toggleLeftSidenav" exact to="/tokens">Tokens<md-icon>vpn_key</md-icon></router-link>
-        </md-list-item>
+          <div class="md-toolbar-container">
+            <h3 class="md-title">Todos Client</h3>
+          </div>
+        </md-toolbar>
 
-        <md-list-item>
-          <router-link @click.native="toggleLeftSidenav" exact to="/profile">Profile<md-icon>account_circle</md-icon></router-link>
-        </md-list-item>
+        <md-list>
+          <md-list-item>
+            <router-link @click.native="toggleLeftSidenav" exact to="/todos"><md-icon>playlist_add_check</md-icon><span>Todos Client</span></router-link>
+          </md-list-item>
 
-        <md-list-item>
-          <router-link @click.native="toggleLeftSidenav" exact to="/device_info">Device Info<md-icon>perm_device_information</md-icon></router-link>
-        </md-list-item>
+          <md-list-item>
+            <router-link @click.native="toggleLeftSidenav" exact to="/tokens"><md-icon>vpn_key</md-icon><span>Tokens</span></router-link>
+          </md-list-item>
 
-        <md-list-item>
-          <router-link @click.native="toggleLeftSidenav" exact  to="/cordova">Cordova<md-icon>perm_device_informations</md-icon></router-link>
-        </md-list-item>
+          <md-list-item>
+              <router-link @click.native="toggleLeftSidenav" exact to="/device"><md-icon>perm_device_information</md-icon><span>Device</span></router-link>
+          </md-list-item>
 
-        <md-list-item>
-          <router-link @click.native="toggleLeftSidenav" exact  to="/notifications">Notifications<md-icon>notifications</md-icon></router-link>
-        </md-list-item>
+          <md-list-item>
+              <router-link @click.native="toggleLeftSidenav" exact to="/contacts"><md-icon>perm_contact_calendar</md-icon><span>Contacts</span></router-link>
+          </md-list-item>
 
-        <md-list-item>
-          <router-link @click.native="toggleLeftSidenav" exact  to="/login">Login/Logout<md-icon>input</md-icon></router-link>
-        </md-list-item>
+          <md-list-item>
+              <router-link @click.native="toggleLeftSidenav" exact to="/cordova"><md-icon>devices</md-icon><span>Cordova</span></router-link>
+          </md-list-item>
 
-        <md-list-item>
-          <router-link @click.native="closeApp" exact to="/exit">Close Application<md-icon>close</md-icon></router-link>
-        </md-list-item>
+          <md-list-item>
+              <router-link @click.native="toggleLeftSidenav" exact to="/notifications"><md-icon>notifications</md-icon><span>Notifications</span></router-link>
+          </md-list-item>
 
-      </md-list>
-    </md-sidenav>
-    <transition name="fade">
-      <router-view></router-view>
-    </transition>
-  </div>
+          <md-list-item>
+            <router-link @click.native="toggleLeftSidenav" exact to="/profile"><md-icon>person_pin</md-icon><span>Profile</span></router-link>
+
+            <md-divider class="md-inset"></md-divider>
+          </md-list-item>
+
+          <md-list-item>
+              <router-link @click.native="toggleLeftSidenav" exact to="/login"><md-icon>power_settings_new</md-icon><span>Login/Logout</span></router-link>
+
+            <md-divider class="md-inset"></md-divider>
+          </md-list-item>
+
+          <md-list-item>
+            <router-link @click.native="toggleLeftSidenav" exact to="/exit"><md-icon>close</md-icon><span>Exit</span></router-link>
+
+            <md-divider class="md-inset"></md-divider>
+          </md-list-item>
+
+          <md-list-item>
+            <md-avatar>
+              <img src="https://placeimg.com/40/40/people/5" alt="People">
+            </md-avatar>
+
+            <span>Person Name</span>
+
+            <md-button class="md-icon-button md-list-action">
+              <md-icon class="md-primary">chat_bubble</md-icon>
+            </md-button>
+          </md-list-item>
+
+        </md-list>
+      </md-sidenav>
+
+      <transition name="bounce"
+                  enter-active-class="animated slideInLeft"
+                  leave-active-class="animated slideOutLeft">
+        <router-view @eventLogin="isLogged" @eventLogout="isLogged"></router-view>
+      </transition>
+    </div>
 </template>
+
 <script>
-import auth from './services/auth'
+import auth from './auth'
+
 export default {
   name: 'app',
   created () {
     console.log(window.location.href)
-
     document.addEventListener('deviceready', this.onDeviceReady, false)
   },
+  data () {
+    return {
+      logged: false
+    }
+  },
   methods: {
+    onDeviceReady () {
+      console.log('Working on platform: ' + window.device.platform)
+      this.overrideAlerts()
+      window.FastClick.attach(document.body)
+    },
     toggleLeftSidenav () {
       this.$refs.leftSidenav.toggle()
     },
     open (ref) {
       console.log('Opened: ' + ref)
-      // Cutre
-      this.$http.defaults.headers.common['Authorization'] = auth.getAuthHeader()
     },
     close (ref) {
       console.log('Closed: ' + ref)
     },
-    onDeviceReady  () {
-      console.log('Working on platform' + window.device.platform)
-//      notifications.enable()
+    isLogged () {
+      this.logged = auth.loggedIn()
     },
-    closeApp () {
-      navigator.notification.confirm(
-        'Do you want to close the aplication?',
-        this.onConfirmQuit,
-        'QUIT',
-        'OK,Cancel'
-      )
-    },
-    onConfirmQuit (button) {
-      console.log(button)
-      if (button === 1) {
-        navigator.app.exitApp()
+    overrideAlerts () {
+      if (navigator.notification) { // Override default HTML alert with native dialog
+        console.log('alerts overwritten')
+        window.alert = function (message) {
+          navigator.notification.alert(
+                  message,    // message
+                  null,       // callback
+                  'Alert', // title
+                  'OK'        // buttonName
+          )
+        }
       }
     }
   }
 }
 </script>
+
 <style>
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .3s
-  }
-  .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
-    opacity: 0
-  }
 </style>

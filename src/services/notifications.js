@@ -6,8 +6,6 @@ import app from '../App.vue'
 
 import Form from 'acacha-forms'
 
-import router from './router'
-
 export default {
   get () {
     return {
@@ -32,9 +30,9 @@ export default {
       'android': {
         'senderID': todosVue.ANDROID_SENDER_ID
       },
-      // 'browser': {
-      //   pushServiceURL: 'http://push.api.phonegap.com/v1/push'
-      // },
+      'browser': {
+        pushServiceURL: 'http://push.api.phonegap.com/v1/push'
+      },
       'ios': {
         'sound': true,
         'vibration': true,
@@ -46,23 +44,22 @@ export default {
   register () {
     app.push.on('registration', function (data) {
       console.log('registration event: ' + data.registrationId)
-      // let oldRegId = localStorage.getItem('registrationId')
-      // if (oldRegId !== data.registrationId) {
+      let oldRegId = localStorage.getItem('registrationId')
+      if (oldRegId !== data.registrationId) {
         // Save new registration ID
-        // localStorage.setItem('registrationId', data.registrationId)
+        localStorage.setItem('registrationId', data.registrationId)
         // Post registrationId to your app server as the value has changed
-      let form = new Form({'registration_id': data.registrationId})
+        let form = new Form({'registration_id': data.registrationId})
 
-      form.post(todosVue.REGISTER_GCM_TOKEN_URL)
-        .then(response => {
-          localStorage.setItem('registrationId', data.registrationId)
-          console.log('GCM token registered OK!')
-        })
-        .catch(error => {
-          console.log('And error ocurred adding GCM token to backend!')
-          console.log(error)
-        })
-      // }
+        form.post(todosVue.REGISTER_GCM_TOKEN_URL)
+            .then(response => {
+              console.log('GCM token registered OK!')
+            })
+            .catch(error => {
+              console.log('And error ocurred adding GCM token to backend!')
+              console.log(error)
+            })
+      }
     })
   },
   subscribe (topic) {
@@ -82,13 +79,6 @@ export default {
       console.log('Title: ' + data.title)
       console.log('Message: ' + data.message)
       console.log('Foreground: ' + data.additionalData.foreground)
-
-      router.push({
-        path: '/notifications',
-        params: {
-          notifications: this.fetchNotifications()
-        }
-      })
     })
   }
 }
