@@ -64,7 +64,7 @@
 
           <md-list-item>
             <md-avatar>
-              <img src="https://placeimg.com/40/40/people/5" alt="People">
+              <img src="https://source.unsplash.com/400x400/?girl" alt="Person">
             </md-avatar>
 
             <span>Person Name</span>

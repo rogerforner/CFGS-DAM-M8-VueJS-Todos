@@ -46,7 +46,7 @@ Vue.material.registerTheme('custom', {
   primary: 'indigo',
   accent: {
     color: 'blue',
-    hue: 'A700'
+    hue: 800
   },
   warn: 'red',
   background: {
