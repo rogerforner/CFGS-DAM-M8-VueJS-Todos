@@ -3,7 +3,7 @@
         <md-table-card>
 
             <md-toolbar>
-                <h1 class="md-title">Todos Client</h1>
+                <h1 class="md-title">Your tasks</h1>
                 <md-button class="md-icon-button">
                     <md-icon>filter_list</md-icon>
                 </md-button>

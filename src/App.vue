@@ -21,7 +21,7 @@
 
         <md-list>
           <md-list-item>
-            <router-link @click.native="toggleLeftSidenav" exact to="/todos"><md-icon>playlist_add_check</md-icon><span>Todos Client</span></router-link>
+            <router-link @click.native="toggleLeftSidenav" exact to="/todos"><md-icon>playlist_add_check</md-icon><span>Tasks</span></router-link>
           </md-list-item>
 
           <md-list-item>
