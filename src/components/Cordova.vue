@@ -6,8 +6,8 @@
             </md-card-header>
 
             <md-card-actions>
-                <md-button @click.native="startVibration">Start</md-button>
-                <md-button @click.native="stopVibration">Stop</md-button>
+                <md-button class="md-raised md-primary" @click.native="startVibration">Start</md-button>
+                <md-button class="md-raised md-warn"@click.native="stopVibration">Stop</md-button>
             </md-card-actions>
 
             <md-snackbar md-position="bottom center" ref="vibrationError" md-duration="4000">
@@ -20,7 +20,7 @@
             </md-card-header>
 
             <md-card-actions>
-                <md-button @click.native="showLocation">Show me!</md-button>
+                <md-button class="md-raised md-primary" @click.native="showLocation">Show me!</md-button>
             </md-card-actions>
 
             <md-snackbar md-position="bottom center" ref="geolocationError" md-duration="4000">
